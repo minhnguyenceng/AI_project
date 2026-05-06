@@ -130,9 +130,9 @@
           <p style="font-size: 1.45vh; line-height: 1.6; opacity: 0.95;">By enabling natural language queries in a native chat interface, we empower non-technical users to interrogate massive enterprise datasets instantly and securely.</p>
           
           <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 1vw; background: rgba(0,0,0,0.2); padding: 3vh 2vw; border-radius: 1.5vh; margin-top: auto; border: 1px solid rgba(255,255,255,0.1);">
-            <div style="text-align: center;"><img src="https://cdn.simpleicons.org/microsoftteams/FFFFFF" style="height: 4vh; margin-bottom: 1vh;"><br><b style="font-size: 1.1vh;">MS Teams</b></div>
+            <div style="text-align: center;"><img src="https://img.icons8.com/?size=100&id=8pm4Aa5bSHh2&format=png&color=000000" style="height: 4vh; margin-bottom: 1vh;"><br><b style="font-size: 1.1vh;">MS Teams</b></div>
             <div style="font-size: 3vh; color: var(--orange);">→</div>
-            <div style="text-align: center;"><div style="height: 4vh; width: 4vh; background: var(--orange); border-radius: 1vh; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 2vh; margin-bottom: 1vh;">GB</div><br><b style="font-size: 1.1vh;">Python Gateway</b></div>
+            <div style="text-align: center;"><div style="height: 4vh; width: 4vh; background: var(--orange); border-radius: 1vh; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 2vh; margin-bottom: 1vh;">GB</div><br><b style="font-size: 1.1vh;">Logic Gateway</b></div>
             <div style="font-size: 3vh; color: var(--orange);">→</div>
             <div style="text-align: center;"><img src="https://cdn.simpleicons.org/databricks/FF3621" style="height: 4vh; margin-bottom: 1vh;"><br><b style="font-size: 1.1vh;">Databricks</b></div>
           </div>
@@ -145,7 +145,7 @@
           <h2>Project Scope & Prerequisites</h2>
           <div class="grid-2" style="display: grid; gap: 2vw;">
             <ul style="margin: 0; padding-left: 1.5vw; font-size: 1.2vh; color: var(--muted); line-height: 1.6;">
-              <li><b>Infra:</b> Local Python environment for PoC, migrating to Docker.</li>
+              <li><b>Infra:</b> Local Python environment for PoC.</li>
               <li><b>Identity:</b> MS Entra ID or Databricks Service Principal.</li>
             </ul>
             <ul style="margin: 0; padding-left: 1.5vw; font-size: 1.2vh; color: var(--muted); line-height: 1.6;">
@@ -189,11 +189,11 @@
         <div class="eyebrow">Technical Architecture</div>
         <h1>A Secure, Three-Tiered Intelligence Bridge</h1>
         <div class="rule"></div>
-        <p class="sub-header">Teams remains lightweight while the Python gateway and Databricks manage state, AI reasoning, and governance.</p>
+        <p class="sub-header">Teams remains lightweight while the gateway and Databricks manage state, AI reasoning, and governance.</p>
       </div>
       <div class="bento-grid grid-3">
         <div class="card accent" style="border-top-color: var(--teams);"><div class="badge badge-blue">Tier 1: Presentation</div><h2>Microsoft Teams UI</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">💬</div><div class="detail-content"><b>Bot Framework</b><p>Ingests plain-text questions.</p></div></div><div class="detail-item"><div class="icon-box">📊</div><div class="detail-content"><b>Adaptive Cards</b><p>Renders rich data UI natively.</p></div></div></div></div>
-        <div class="card dark"><div class="badge" style="background: var(--orange); color: #fff;">Tier 2: Middleware</div><h2>Python Logic Gateway</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">API</div><div class="detail-content"><b>Orchestration Engine</b><p>FastAPI service routing payloads.</p></div></div><div class="detail-item"><div class="icon-box">🛠️</div><div class="detail-content"><b>Response Shaping</b><p>Translates JSON to Adaptive UI.</p></div></div></div></div>
+        <div class="card dark"><div class="badge" style="background: var(--orange); color: #fff;">Tier 2: Middleware</div><h2>Logic Gateway</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">API</div><div class="detail-content"><b>Orchestration Engine</b><p>FastAPI service routing payloads.</p></div></div><div class="detail-item"><div class="icon-box">🛠️</div><div class="detail-content"><b>Response Shaping</b><p>Translates JSON to Adaptive UI.</p></div></div></div></div>
         <div class="card accent" style="border-top-color: var(--dbx);"><div class="badge" style="background: #ffeceb; color: var(--dbx);">Tier 3: Intelligence</div><h2>Databricks Backend</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">🧠</div><div class="detail-content"><b>Genie Spaces API</b><p>Translates text to SQL.</p></div></div><div class="detail-item"><div class="icon-box">🛡️</div><div class="detail-content"><b>Unity Catalog</b><p>Enforces strict access control.</p></div></div></div></div>
         <div class="card span-3" style="padding: 2vh;"><h3 style="margin-bottom: 1vh; text-transform: uppercase; font-size: 1vh; color: var(--muted);">Data Pipeline Sequence</h3>
           <div style="display: flex; justify-content: space-between; align-items: center; background: var(--soft); border: 1px dashed var(--line); padding: 1.5vh; border-radius: 1vh;">
@@ -218,7 +218,7 @@
       </div>
       <div class="bento-grid grid-2">
         <div class="card"><div class="badge badge-blue">Control Matrix</div><h2>Security Layers</h2>
-          <table><tr><th>Domain</th><th>Enforcement Mechanism</th></tr><tr><td><b>Authentication</b></td><td>Enterprise OAuth / SP Tokens</td></tr><tr><td><b>Authorization</b></td><td>Unity Catalog RBAC (Row/Column)</td></tr><tr><td><b>In-Transit</b></td><td>TLS 1.2+ Encrypted Webhooks</td></tr><tr><td><b>At-Rest</b></td><td>Gateway is stateless (No caching)</td></tr></table>
+          <table><tr><th>Domain</th><th>Enforcement Mechanism</th></tr><tr><td><b>Authentication</b></td><td>Enterprise OAuth / SP Tokens</td></tr><tr><td><b>Authorization</b></td><td>Unity Catalog Acccess Level</td></tr><tr><td><b>In-Transit</b></td><td>TLS 1.2+ Encrypted Webhooks</td></tr><tr><td><b>At-Rest</b></td><td>Gateway is stateless (No caching)</td></tr></table>
         </div>
         <div class="card dark"><div class="badge badge-orange">AI Guardrails</div><h2>Ensuring Verified Intelligence</h2><p style="margin-bottom: 1.5vh;">GenieBridge does not allow open generative chat. It is bounded by curated data engineering assets.</p>
           <div class="detail-list"><div class="detail-item"><div class="icon-box">✓</div><div class="detail-content"><b>Trusted Assets Only:</b> <span style="color: #cbd5e1; font-size: 1.1vh;">Queries only explicitly tagged tables.</span></div></div><div class="detail-item"><div class="icon-box">✓</div><div class="detail-content"><b>Semantic Guardrails:</b> <span style="color: #cbd5e1; font-size: 1.1vh;">Forces use of approved formulas (e.g. margin).</span></div></div></div>
@@ -300,7 +300,7 @@
         <div class="card span-2" style="padding: 0; border-radius: 1vh; background: transparent; box-shadow: none;">
           <div class="mock-teams">
             <div class="mock-header">
-              <img src="https://cdn.simpleicons.org/microsoftteams/6264A7" style="height: 2.5vh;">
+              <img src="https://img.icons8.com/?size=100&id=QphmKymsXrKZ&format=png&color=000000" style="height: 2.5vh;">
               <b style="font-size: 1.2vh; color: var(--navy);">Data Assistant Bot</b>
               <span style="margin-left: auto; font-size: 1vh; background: #d1fae5; color: #047857; padding: 0.3vh 0.6vw; border-radius: 0.5vh; font-weight: bold;">Online</span>
             </div>
