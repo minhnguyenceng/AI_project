@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GenieBridge | Enterprise Data Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy: #0e2d4d;
+      --navy2: #153b63;
+      --orange: #f58220;
+      --paper: #ffffff;
+      --bg: #eef2f6;
+      --soft: #f8fafc;
+      --soft2: #e2e8f0;
+      --line: #cbd5e1;
+      --ink: #0f172a;
+      --muted: #475569;
+      --teams: #6264a7;
+      --dbx: #ff3621;
+      --green: #10b981;
+      --teal: #06b6d4;
+      --shadow: 0 1vh 3vh rgba(14,45,77,.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: Inter, Arial, sans-serif; color: var(--ink); }
+    
+    /* Presentation Layout */
+    .deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; background: var(--paper); }
+    .slide { position: absolute; inset: 0; display: none; padding: 2.5vh 3vw 2vh; background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%); flex-direction: column; }
+    .slide.active { display: flex; }
+    
+    /* Header */
+    .header { flex-shrink: 0; margin-bottom: 1.5vh; }
+    .eyebrow { font-size: 1.2vh; font-weight: 900; letter-spacing: .15em; color: var(--orange); text-transform: uppercase; margin-bottom: .6vh; display: flex; align-items: center; gap: 1vw; }
+    .eyebrow::after { content: ''; height: 2px; flex-grow: 1; max-width: 10vw; background: var(--orange); opacity: 0.3; }
+    h1 { font-size: 3vh; line-height: 1.2; margin: 0; color: var(--navy); letter-spacing: -.03em; font-weight: 900; }
+    .rule { height: .4vh; margin: 1vh -3vw 1.2vh; background: linear-gradient(90deg, var(--orange) 0 15%, var(--navy) 15% 100%); }
+    .sub-header { font-size: 1.4vh; color: var(--muted); font-style: italic; max-width: 90%; line-height: 1.5; margin: 0; }
+
+    /* Bento Grid */
+    .bento-grid { display: grid; gap: 1.5vh; flex-grow: 1; min-height: 0; align-content: stretch; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    
+    /* Cards */
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 1.5vh; padding: 2vh; box-shadow: var(--shadow); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+    .card.dark { background: var(--navy); color: #fff; border: none; }
+    .card.accent { border-top: 0.5vh solid var(--orange); }
+    .card.span-2 { grid-column: span 2; }
+    .card.span-3 { grid-column: span 3; }
+    .card.row-2 { grid-row: span 2; }
+    
+    h2 { font-size: 1.8vh; margin: 0 0 1.2vh; color: var(--navy); font-weight: 800; border-bottom: 1px solid var(--line); padding-bottom: 0.8vh; }
+    .card.dark h2 { color: #fff; border-bottom-color: rgba(255,255,255,0.15); }
+    h3 { font-size: 1.4vh; margin: 0 0 0.8vh; color: var(--navy); font-weight: 700; }
+    .card.dark h3 { color: #e2e8f0; }
+    p { font-size: 1.25vh; line-height: 1.5; color: var(--muted); margin: 0 0 1vh; }
+    .card.dark p { color: #cbd5e1; }
+    
+    /* Badges & Icons */
+    .badge { display: inline-block; padding: 0.4vh 0.8vw; border-radius: 0.6vh; font-size: 0.95vh; font-weight: 800; text-transform: uppercase; margin-bottom: 1.2vh; letter-spacing: 0.05em; align-self: flex-start; }
+    .badge-blue { background: #e0f2fe; color: #0369a1; }
+    .badge-orange { background: #ffedd5; color: #c2410c; }
+    .badge-green { background: #d1fae5; color: #047857; }
+    .badge-dark { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+    .detail-list { display: flex; flex-direction: column; gap: 1.2vh; }
+    .detail-item { display: flex; gap: 1vw; align-items: flex-start; }
+    .icon-box { width: 3.5vh; height: 3.5vh; background: var(--soft2); color: var(--navy); border-radius: 0.8vh; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.6vh; flex-shrink: 0; }
+    .card.dark .icon-box { background: rgba(255,255,255,0.1); color: var(--orange); }
+    .detail-content b { display: block; font-size: 1.3vh; color: var(--navy); margin-bottom: 0.3vh; }
+    .card.dark .detail-content b { color: #fff; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 1.15vh; margin-top: auto; }
+    th { background: var(--navy); color: #fff; text-align: left; padding: 1vh; font-weight: 600; border-radius: 0.5vh 0.5vh 0 0; }
+    td { padding: 1vh; border-bottom: 1px solid var(--line); color: var(--muted); background: #fff; }
+    tr:nth-child(even) td { background: var(--soft); }
+
+    /* Teams Mockup UI */
+    .mock-teams { background: #f3f2f1; border-radius: 1vh; border: 1px solid var(--line); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+    .mock-header { background: #fff; padding: 1vh 1vw; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 1vw; }
+    .mock-chat { padding: 1.5vh; display: flex; flex-direction: column; gap: 1.5vh; flex-grow: 1; overflow-y: auto; }
+    .msg-user { align-self: flex-end; background: #e1dfdd; padding: 1vh 1vw; border-radius: 1vh 1vh 0 1vh; font-size: 1.2vh; color: #201f1e; max-width: 80%; }
+    .msg-bot { align-self: flex-start; display: flex; gap: 0.8vw; max-width: 85%; }
+    .msg-avatar { width: 3.5vh; height: 3.5vh; background: var(--teams); color: #fff; border-radius: 0.5vh; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5vh; flex-shrink: 0; }
+    .msg-content { background: #fff; border: 1px solid var(--line); padding: 1vh 1vw; border-radius: 0 1vh 1vh 1vh; font-size: 1.15vh; color: #201f1e; box-shadow: 0 0.2vh 0.5vh rgba(0,0,0,0.05); }
+    .mock-adaptive { margin-top: 1vh; border: 1px solid #d9e0e8; border-radius: 0.8vh; padding: 1vh; background: #fcfcfc; }
+    .mock-btn { display: block; text-align: center; background: #fff; color: var(--teams); border: 1px solid var(--teams); border-radius: 0.5vh; padding: 0.6vh; font-size: 1vh; font-weight: bold; margin-top: 1vh; }
+
+    /* Custom CSS Chart for Slide 5 */
+    .css-chart { display: flex; align-items: flex-end; gap: 0.6vw; height: 12vh; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); padding: 0 1vw 0.5vh; margin-top: 1vh; }
+    .css-bar { width: 2.5vw; background: var(--teal); border-radius: 0.3vh 0.3vh 0 0; }
+
+    /* Footer & Navigation */
+    .footer { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding-top: 1vh; border-top: 1px solid var(--line); margin-top: 1vh; }
+    .corp-logo { font-weight: 900; font-size: 1.6vh; color: var(--navy); letter-spacing: 1px; }
+    .corp-logo span { font-weight: 400; font-size: 0.9vh; display: block; color: var(--muted); }
+
+    .nav-pill { position: fixed; bottom: 1.5vh; left: 50%; transform: translateX(-50%); background: var(--navy); padding: 0.8vh 1.2vw; border-radius: 5vh; display: flex; align-items: center; gap: 1vw; box-shadow: 0 1vh 2vh rgba(0,0,0,0.3); z-index: 9999; border: 1px solid rgba(255,255,255,0.1); }
+    .nav-pill button { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.6vh 1vw; border-radius: 4vh; cursor: pointer; font-weight: 800; font-size: 1vh; text-transform: uppercase; transition: all 0.2s; }
+    .nav-pill button:hover { background: var(--orange); border-color: var(--orange); }
+    .nav-pill .counter { color: rgba(255,255,255,0.6); font-size: 1.1vh; font-weight: 900; font-family: monospace; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 1vw; }
+
+  </style>
+</head>
+<body>
+
+  <main class="deck">
+    
+    <!-- SLIDE 1: OVERVIEW -->
+    <section class="slide active">
+      <div class="header">
+        <div class="eyebrow">Executive Summary</div>
+        <h1>GenieBridge: Natural Language Data Intelligence in Teams</h1>
+        <div class="rule"></div>
+        <p class="sub-header">Bypassing technical hurdles to bring real-time, governed Databricks insights directly into the executive decision-making workflow.</p>
+      </div>
+      
+      <div class="bento-grid grid-3">
+        <div class="card dark span-2 row-2">
+          <div class="badge badge-orange">Strategic Initiative 1.0</div>
+          <h2 style="font-size: 2.8vh; border: none; margin-bottom: 2vh;">Bridging the gap between "Data Available" and "Data Actionable"</h2>
+          <p style="font-size: 1.45vh; line-height: 1.6; opacity: 0.95; margin-bottom: 2vh;">Organizations invest millions in centralized Lakehouses, yet business leaders still rely on manual data pulls or static dashboards. GenieBridge connects the semantic reasoning power of <b>Databricks AI/BI Genie</b> directly to the ubiquity of <b>Microsoft Teams</b>.</p>
+          <p style="font-size: 1.45vh; line-height: 1.6; opacity: 0.95;">By enabling natural language queries in a native chat interface, we empower non-technical users to interrogate massive enterprise datasets instantly and securely.</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 1vw; background: rgba(0,0,0,0.2); padding: 3vh 2vw; border-radius: 1.5vh; margin-top: auto; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="text-align: center;"><img src="https://cdn.simpleicons.org/microsoftteams/FFFFFF" style="height: 4vh; margin-bottom: 1vh;"><br><b style="font-size: 1.1vh;">MS Teams</b></div>
+            <div style="font-size: 3vh; color: var(--orange);">→</div>
+            <div style="text-align: center;"><div style="height: 4vh; width: 4vh; background: var(--orange); border-radius: 1vh; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 2vh; margin-bottom: 1vh;">GB</div><br><b style="font-size: 1.1vh;">Python Gateway</b></div>
+            <div style="font-size: 3vh; color: var(--orange);">→</div>
+            <div style="text-align: center;"><img src="https://cdn.simpleicons.org/databricks/FF3621" style="height: 4vh; margin-bottom: 1vh;"><br><b style="font-size: 1.1vh;">Databricks</b></div>
+          </div>
+        </div>
+
+        <div class="card accent"><div class="icon-box" style="margin-bottom: 1vh; background: #e0f2fe; color: #0369a1;">01</div><h2>Frictionless UX</h2><p>If an executive can send a chat message, they can perform deep data analysis. No SQL training required.</p></div>
+        <div class="card accent"><div class="icon-box" style="margin-bottom: 1vh; background: #d1fae5; color: #047857;">02</div><h2>Governed by Default</h2><p>Inherits strict Unity Catalog models. Users only receive answers derived from authorized data.</p></div>
+        
+        <div class="card span-2 accent">
+          <h2>Project Scope & Prerequisites</h2>
+          <div class="grid-2" style="display: grid; gap: 2vw;">
+            <ul style="margin: 0; padding-left: 1.5vw; font-size: 1.2vh; color: var(--muted); line-height: 1.6;">
+              <li><b>Infra:</b> Local Python environment for PoC, migrating to Docker.</li>
+              <li><b>Identity:</b> MS Entra ID or Databricks Service Principal.</li>
+            </ul>
+            <ul style="margin: 0; padding-left: 1.5vw; font-size: 1.2vh; color: var(--muted); line-height: 1.6;">
+              <li><b>Data:</b> Curated tables registered in Unity Catalog.</li>
+              <li><b>Setup:</b> Genie Space configured with trusted assets.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="background: var(--navy); color: white; display: flex; justify-content: center; align-items: center; text-align: center;"><div class="badge badge-green" style="font-size: 1.1vh; padding: 1vh 2vw;">Status: Ready for Pilot</div></div>
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 2: PROBLEM & SOLUTION -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">The Business Case</div>
+        <h1>Solving High Friction in Current Data Workflows</h1>
+        <div class="rule"></div>
+        <p class="sub-header">Identifying the disconnect between enterprise data availability and front-line business agility.</p>
+      </div>
+      <div class="bento-grid grid-3">
+        <div class="card"><div class="badge badge-orange">The Executive</div><h2>Dashboard Fatigue</h2><p>Leaders are forced to break their workflow, log into web portals, locate reports, and decode filters just to answer a standard operational question.</p><div style="margin-top: auto; font-size: 1vh; font-weight: 700; color: #c2410c; background: #ffedd5; padding: 0.8vh; border-radius: 0.5vh;">Impact: Delayed decisions.</div></div>
+        <div class="card"><div class="badge badge-blue">The Data Team</div><h2>Analyst Bottlenecks</h2><p>Because self-service BI tools are complex, simple queries ("What was regional margin?") turn into Jira tickets, burying engineers in CSV pulls.</p><div style="margin-top: auto; font-size: 1vh; font-weight: 700; color: #0369a1; background: #e0f2fe; padding: 0.8vh; border-radius: 0.5vh;">Impact: High cost of low-value work.</div></div>
+        <div class="card"><div class="badge badge-green">IT & Security</div><h2>Shadow IT Risks</h2><p>When official paths are slow, business units export Lakehouse data to local Excel files or unapproved AI tools to get quick answers.</p><div style="margin-top: auto; font-size: 1vh; font-weight: 700; color: #047857; background: #d1fae5; padding: 0.8vh; border-radius: 0.5vh;">Impact: Loss of auditability.</div></div>
+        <div class="card span-3 dark" style="padding: 2.5vh;">
+          <h2>The Workflow Transformation</h2>
+          <p style="margin-bottom: 1.5vh;">GenieBridge eliminates the friction layer entirely. It brings the answer directly to the conversation.</p>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1.5vh;">
+            <div style="display: flex; align-items: center; gap: 1vw; background: rgba(255,255,255,0.05); padding: 1.5vh; border-radius: 1vh;"><b style="color: var(--muted); width: 8vw; text-transform: uppercase; font-size: 1vh;">Current:</b><span style="font-size: 1.1vh; color: #cbd5e1;">Portal Login → Navigate Folders → Configure Filters → Export CSV → Analyze → Decision</span></div>
+            <div style="display: flex; align-items: center; gap: 1vw; background: rgba(255,130,32,0.1); border: 1px solid rgba(255,130,32,0.3); padding: 1.5vh; border-radius: 1vh;"><b style="color: var(--orange); width: 8vw; text-transform: uppercase; font-size: 1vh;">Future:</b><span style="font-size: 1.2vh; font-weight: 700; color: #fff;">Ask in Teams Chat → Instant Verified Answer → Decision</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 3: ARCHITECTURE -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">Technical Architecture</div>
+        <h1>A Secure, Three-Tiered Intelligence Bridge</h1>
+        <div class="rule"></div>
+        <p class="sub-header">Teams remains lightweight while the Python gateway and Databricks manage state, AI reasoning, and governance.</p>
+      </div>
+      <div class="bento-grid grid-3">
+        <div class="card accent" style="border-top-color: var(--teams);"><div class="badge badge-blue">Tier 1: Presentation</div><h2>Microsoft Teams UI</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">💬</div><div class="detail-content"><b>Bot Framework</b><p>Ingests plain-text questions.</p></div></div><div class="detail-item"><div class="icon-box">📊</div><div class="detail-content"><b>Adaptive Cards</b><p>Renders rich data UI natively.</p></div></div></div></div>
+        <div class="card dark"><div class="badge" style="background: var(--orange); color: #fff;">Tier 2: Middleware</div><h2>Python Logic Gateway</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">API</div><div class="detail-content"><b>Orchestration Engine</b><p>FastAPI service routing payloads.</p></div></div><div class="detail-item"><div class="icon-box">🛠️</div><div class="detail-content"><b>Response Shaping</b><p>Translates JSON to Adaptive UI.</p></div></div></div></div>
+        <div class="card accent" style="border-top-color: var(--dbx);"><div class="badge" style="background: #ffeceb; color: var(--dbx);">Tier 3: Intelligence</div><h2>Databricks Backend</h2><div class="detail-list"><div class="detail-item"><div class="icon-box">🧠</div><div class="detail-content"><b>Genie Spaces API</b><p>Translates text to SQL.</p></div></div><div class="detail-item"><div class="icon-box">🛡️</div><div class="detail-content"><b>Unity Catalog</b><p>Enforces strict access control.</p></div></div></div></div>
+        <div class="card span-3" style="padding: 2vh;"><h3 style="margin-bottom: 1vh; text-transform: uppercase; font-size: 1vh; color: var(--muted);">Data Pipeline Sequence</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: var(--soft); border: 1px dashed var(--line); padding: 1.5vh; border-radius: 1vh;">
+            <div style="text-align: center;"><b>1. User Intent</b><br><span style="font-size: 1vh; color: var(--muted)">Teams POST</span></div><div style="color: var(--orange); font-weight: bold;">→</div>
+            <div style="text-align: center;"><b>2. Validation</b><br><span style="font-size: 1vh; color: var(--muted)">Gateway Auth</span></div><div style="color: var(--orange); font-weight: bold;">→</div>
+            <div style="text-align: center;"><b>3. Inference</b><br><span style="font-size: 1vh; color: var(--muted)">Genie compiles SQL</span></div><div style="color: var(--orange); font-weight: bold;">→</div>
+            <div style="text-align: center;"><b>4. Execution</b><br><span style="font-size: 1vh; color: var(--muted)">Warehouse runs query</span></div><div style="color: var(--orange); font-weight: bold;">→</div>
+            <div style="text-align: center;"><b>5. Delivery</b><br><span style="font-size: 1vh; color: var(--muted)">Adaptive Card sent</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 4: SECURITY -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">Governance & Compliance</div>
+        <h1>Enterprise-Grade Data Security Framework</h1>
+        <div class="rule"></div>
+        <p class="sub-header">GenieBridge increases accessibility without bypassing existing enterprise perimeters or Zero Trust architecture.</p>
+      </div>
+      <div class="bento-grid grid-2">
+        <div class="card"><div class="badge badge-blue">Control Matrix</div><h2>Security Layers</h2>
+          <table><tr><th>Domain</th><th>Enforcement Mechanism</th></tr><tr><td><b>Authentication</b></td><td>Enterprise OAuth / SP Tokens</td></tr><tr><td><b>Authorization</b></td><td>Unity Catalog RBAC (Row/Column)</td></tr><tr><td><b>In-Transit</b></td><td>TLS 1.2+ Encrypted Webhooks</td></tr><tr><td><b>At-Rest</b></td><td>Gateway is stateless (No caching)</td></tr></table>
+        </div>
+        <div class="card dark"><div class="badge badge-orange">AI Guardrails</div><h2>Ensuring Verified Intelligence</h2><p style="margin-bottom: 1.5vh;">GenieBridge does not allow open generative chat. It is bounded by curated data engineering assets.</p>
+          <div class="detail-list"><div class="detail-item"><div class="icon-box">✓</div><div class="detail-content"><b>Trusted Assets Only:</b> <span style="color: #cbd5e1; font-size: 1.1vh;">Queries only explicitly tagged tables.</span></div></div><div class="detail-item"><div class="icon-box">✓</div><div class="detail-content"><b>Semantic Guardrails:</b> <span style="color: #cbd5e1; font-size: 1.1vh;">Forces use of approved formulas (e.g. margin).</span></div></div></div>
+        </div>
+        <div class="card span-2 accent" style="flex-direction: row; gap: 3vw;"><div style="flex: 1;"><h2>Comprehensive Audit Trail</h2><p>Every interaction is auditable. Security teams retain full visibility into usage, exactly as if the user ran a query directly in Databricks.</p></div>
+          <div style="flex: 1; background: var(--soft); border: 1px dashed var(--line); padding: 1.5vh; border-radius: 1vh;"><b style="font-size: 1.1vh; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 1vh;">Logged Telemetry:</b>
+            <ul style="margin: 0; padding-left: 1.5vw; font-size: 1.15vh; color: var(--muted); line-height: 1.5;"><li>Original natural language prompt text.</li><li>Executing Entra ID / UPN.</li><li>Exact AI-generated SQL query executed.</li><li>Execution timestamp and duration.</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 5: VISUAL LOGIC -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">Data Presentation Rules</div>
+        <h1>Deterministic Visual Rendering Logic</h1>
+        <div class="rule"></div>
+        <p class="sub-header">The middleware does not guess. It employs a strict matrix to ensure charts are generated correctly, defaulting to tables to prevent hallucinated visualizations.</p>
+      </div>
+      <div class="bento-grid grid-3">
+        <div class="card dark">
+          <div class="badge badge-orange">Gateway Logic</div>
+          <h2>Decision Pathway</h2>
+          <div class="detail-list" style="gap: 1vh;">
+            <div class="detail-item"><div class="icon-box">1</div><div class="detail-content"><b>Schema Parse</b><p>Review columns & data types.</p></div></div>
+            <div class="detail-item"><div class="icon-box">2</div><div class="detail-content"><b>Axis Detection</b><p>Find dates or string categories.</p></div></div>
+            <div class="detail-item"><div class="icon-box">3</div><div class="detail-content"><b>Component Choice</b><p>Select Bar, Line, or Table view.</p></div></div>
+            <div class="detail-item"><div class="icon-box">4</div><div class="detail-content"><b>Safe Fallback</b><p>If ambiguous, render Table-only.</p></div></div>
+          </div>
+        </div>
+        
+        <div class="card span-2">
+          <h2>Shape to Component Mapping</h2>
+          <table>
+            <tr><th>Data Shape Detected</th><th>Optimal UI Choice</th><th>Business Justification</th></tr>
+            <tr><td>Date + Float</td><td><b>Trend Line</b></td><td>Highlights velocity over a defined period.</td></tr>
+            <tr><td>String + Float</td><td><b>Bar Chart</b></td><td>Supports visual comparison of categorical volume.</td></tr>
+            <tr><td>Multiple Dimensions</td><td><b>Data Table</b></td><td>Prevents incorrect grouping assumptions.</td></tr>
+            <tr><td>1 Row + Multiple KPIs</td><td><b>Summary Table</b></td><td>Executive view without an unnatural X-axis.</td></tr>
+          </table>
+        </div>
+
+        <div class="card span-3 accent" style="flex-direction: row; gap: 2vw; align-items: center; padding: 2vh;">
+          <div style="flex: 1;">
+            <h3>Example: Handling Time Series Safely</h3>
+            <p>When asked for "monthly production," Genie returns Year, Month, and Volume columns. The gateway recognizes Year/Month as a single chronological axis, avoiding the trap of rendering "Month ID" as a second measure.</p>
+          </div>
+          <div style="flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 1vh; padding: 1.5vh;">
+            <div class="css-chart">
+              <div class="css-bar" style="height: 30%"></div>
+              <div class="css-bar" style="height: 45%"></div>
+              <div class="css-bar" style="height: 60%"></div>
+              <div class="css-bar" style="height: 50%"></div>
+              <div class="css-bar" style="height: 75%"></div>
+              <div class="css-bar" style="height: 90%"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 0.5vh 0 0 1vw; font-size: 0.9vh; font-weight: bold; color: var(--muted);">
+              <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 6: DEMO STORY -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">The User Experience</div>
+        <h1>Experiencing the Workflow in Teams</h1>
+        <div class="rule"></div>
+        <p class="sub-header">A frictionless journey demonstrating natural language comprehension, rapid execution, and conversational memory.</p>
+      </div>
+      <div class="bento-grid grid-3">
+        
+        <!-- Teams Mockup -->
+        <div class="card span-2" style="padding: 0; border-radius: 1vh; background: transparent; box-shadow: none;">
+          <div class="mock-teams">
+            <div class="mock-header">
+              <img src="https://cdn.simpleicons.org/microsoftteams/6264A7" style="height: 2.5vh;">
+              <b style="font-size: 1.2vh; color: var(--navy);">Data Assistant Bot</b>
+              <span style="margin-left: auto; font-size: 1vh; background: #d1fae5; color: #047857; padding: 0.3vh 0.6vw; border-radius: 0.5vh; font-weight: bold;">Online</span>
+            </div>
+            <div class="mock-chat">
+              <div class="msg-user">Show me the top 3 performing regions by profit margin last month.</div>
+              <div class="msg-bot">
+                <div class="msg-avatar">G</div>
+                <div class="msg-content" style="background: #f8fafc; border-style: dashed; color: #64748b; font-style: italic;">GenieBridge is polling Databricks...</div>
+              </div>
+              <div class="msg-bot">
+                <div class="msg-avatar">G</div>
+                <div class="msg-content">
+                  Here are the top performing regions for October:
+                  <div class="mock-adaptive">
+                    <b style="font-size: 1.1vh; display: block; margin-bottom: 0.5vh;">Profit Margin by Region</b>
+                    <table style="font-size: 1vh; margin:0;">
+                      <tr><th>Rank</th><th>Region</th><th>Margin</th></tr>
+                      <tr><td>1</td><td>Central</td><td>38.4%</td></tr>
+                      <tr><td>2</td><td>Northeast</td><td>35.1%</td></tr>
+                      <tr><td>3</td><td>West</td><td>31.8%</td></tr>
+                    </table>
+                    <div class="mock-btn">Open in Databricks</div>
+                  </div>
+                </div>
+              </div>
+              <div class="msg-user">What about just the Northeast broken down by product?</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tutorial Steps -->
+        <div class="card dark">
+          <div class="badge badge-orange">Tutorial Script</div>
+          <h2>Workflow Breakdown</h2>
+          <div class="detail-list" style="gap: 1.2vh;">
+            <div class="detail-item"><div class="icon-box">1</div><div class="detail-content"><b>The Ask</b><p>User queries in natural terminology without knowing DB schema.</p></div></div>
+            <div class="detail-item"><div class="icon-box">2</div><div class="detail-content"><b>The Processing</b><p>Gateway manages expectations with a "thinking" indicator.</p></div></div>
+            <div class="detail-item"><div class="icon-box">3</div><div class="detail-content"><b>The Reveal</b><p>Returns a clean Adaptive Card table + deep-link button.</p></div></div>
+            <div class="detail-item"><div class="icon-box">4</div><div class="detail-content"><b>The Follow-up</b><p>Session memory allows conversational filter adjustments.</p></div></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+    <!-- SLIDE 7: ROADMAP & AGENT MODE -->
+    <section class="slide">
+      <div class="header">
+        <div class="eyebrow">Roadmap & Future State</div>
+        <h1>Deployment Plan & Agent Mode Evolution</h1>
+        <div class="rule"></div>
+        <p class="sub-header">Phased rollout strategy protecting agile momentum, leading toward autonomous multi-step research capabilities.</p>
+      </div>
+      <div class="bento-grid grid-3">
+        
+        <!-- Roadmap List -->
+        <div class="card">
+          <div class="badge badge-blue">Execution Timeline</div>
+          <h2>Rollout Phases</h2>
+          <div class="detail-list" style="gap: 1.5vh;">
+            <div style="border-left: 0.3vh solid var(--orange); padding-left: 1vw;">
+              <b style="font-size: 1.2vh; color: var(--navy);">1. Local PoC (Weeks 1-2)</b>
+              <p style="font-size: 1.1vh; margin:0;">Python env, Bot Framework connect, basic payload testing.</p>
+            </div>
+            <div style="border-left: 0.3vh solid var(--orange); padding-left: 1vw;">
+              <b style="font-size: 1.2vh; color: var(--navy);">2. Alpha Pilot (Weeks 3-4)</b>
+              <p style="font-size: 1.1vh; margin:0;">Deploy to 5-10 business champions. Tune Adaptive Cards.</p>
+            </div>
+            <div style="border-left: 0.3vh solid var(--orange); padding-left: 1vw;">
+              <b style="font-size: 1.2vh; color: var(--navy);">3. Workspace Polish (Wk 5-6)</b>
+              <p style="font-size: 1.1vh; margin:0;">Inject trusted SQL examples based on real pilot telemetry.</p>
+            </div>
+            <div style="border-left: 0.3vh solid var(--navy); padding-left: 1vw;">
+              <b style="font-size: 1.2vh; color: var(--navy);">4. Prod Migration (Month 2+)</b>
+              <p style="font-size: 1.1vh; margin:0;">Cloud container hosting & formal Teams App catalog publish.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Mode Info & GIF -->
+        <div class="card dark span-2" style="display: flex; flex-direction: column;">
+          <div class="badge badge-orange">Future Capability</div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1vh; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 1vh;">
+            <h2 style="margin:0; border:none; padding:0;">Databricks Agent Mode</h2>
+            <span style="font-size: 1vh; color: #cbd5e1;">(Currently in Public Preview)</span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; flex-grow: 1;">
+            <div>
+              <p style="margin-bottom: 1.5vh;">While GenieBridge handles rapid operational queries today, Agent Mode represents the next horizon for autonomous research.</p>
+              <div class="detail-list">
+                <div class="detail-item"><div class="icon-box">A</div><div class="detail-content"><b>Multi-Step Reasoning</b><p>AI runs sequential queries to find "root causes".</p></div></div>
+                <div class="detail-item"><div class="icon-box">B</div><div class="detail-content"><b>Autonomous Refinement</b><p>If a SQL query errors, the Agent self-corrects.</p></div></div>
+                <div class="detail-item"><div class="icon-box">C</div><div class="detail-content"><b>Complex Synthesis</b><p>Outputs comprehensive executive summaries.</p></div></div>
+              </div>
+            </div>
+            
+            <div style="background: #f8fafc; border-radius: 1vh; padding: 0.5vh; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--line);">
+              <img src="https://assets.docs.databricks.com/_static/images/agent-mode.gif" alt="Agent Mode Demo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 0.5vh;">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="footer"><div class="corp-logo">MURPHY<span>OIL CORPORATION</span></div></div>
+    </section>
+
+  </main>
+
+  <!-- NAVIGATION PILL -->
+  <nav class="nav-pill">
+    <button onclick="prevSlide()">Previous</button>
+    <button onclick="nextSlide()">Next Slide</button>
+    <div class="counter" id="slideCounter">1 / 7</div>
+  </nav>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    let index = 0;
+    const counterDisplay = document.getElementById('slideCounter');
+
+    function updateCounter() {
+      counterDisplay.innerText = `${index + 1} / ${slides.length}`;
+    }
+
+    function showSlide(i) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, n) => {
+        if (n === index) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+      updateCounter();
+    }
+
+    function nextSlide() { 
+      if (index < slides.length - 1) showSlide(index + 1); 
+    }
+
+    function prevSlide() { 
+      if (index > 0) showSlide(index - 1); 
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updateCounter();
+  </script>
+</body>
+</html>
